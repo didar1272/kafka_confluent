@@ -7,8 +7,7 @@ KAFKA_URL = 'localhost:9092'
 TOPIC = 'weather_data'
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 
-kafka_producer = Producer({'bootstrap.servers': 'localhost:9092'})
-print(kafka_producer)
+kafka_producer = Producer({'bootstrap.servers': KAFKA_URL})
 
 
 def fetch_weather_data() -> dict | None:
@@ -29,7 +28,7 @@ def delivery_report(err, msg):
 
 
 def produce_messages():
-    data = fetch_weather_data()
+    data = [fetch_weather_data()]
     for item in data:
         kafka_producer.poll(0)
         kafka_producer.produce(TOPIC,
